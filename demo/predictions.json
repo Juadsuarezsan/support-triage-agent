@@ -1,0 +1,168 @@
+{
+  "model": "distilbert-base-uncased + LoRA r=8",
+  "n_labels": 27,
+  "test_macro_f1": 0.9864,
+  "generated_at": "2026-05-16T21:37:31Z",
+  "predictions": [
+    {
+      "ticket": "I'd like a refund for the order I placed yesterday \u2014 it never arrived.",
+      "top_intent": "get_refund",
+      "confidence": 0.5660179853439331,
+      "alternatives": [
+        {
+          "intent": "check_refund_policy",
+          "confidence": 0.1869741678237915
+        },
+        {
+          "intent": "track_refund",
+          "confidence": 0.18490532040596008
+        }
+      ],
+      "inference_ms": 112.68
+    },
+    {
+      "ticket": "How do I cancel my subscription before the next billing cycle?",
+      "top_intent": "delete_account",
+      "confidence": 0.4937317371368408,
+      "alternatives": [
+        {
+          "intent": "check_cancellation_fee",
+          "confidence": 0.46025216579437256
+        },
+        {
+          "intent": "check_refund_policy",
+          "confidence": 0.009116523899137974
+        }
+      ],
+      "inference_ms": 50.21
+    },
+    {
+      "ticket": "Can you help me reset my password? The reset email never came.",
+      "top_intent": "recover_password",
+      "confidence": 0.9956268072128296,
+      "alternatives": [
+        {
+          "intent": "delete_account",
+          "confidence": 0.002868285635486245
+        },
+        {
+          "intent": "change_shipping_address",
+          "confidence": 0.0006226513651199639
+        }
+      ],
+      "inference_ms": 51.58
+    },
+    {
+      "ticket": "I want to talk to a real person, the chatbot keeps misunderstanding me.",
+      "top_intent": "contact_human_agent",
+      "confidence": 0.9890538454055786,
+      "alternatives": [
+        {
+          "intent": "registration_problems",
+          "confidence": 0.0054114824160933495
+        },
+        {
+          "intent": "recover_password",
+          "confidence": 0.001569796702824533
+        }
+      ],
+      "inference_ms": 62.64
+    },
+    {
+      "ticket": "I forgot to add an item to my cart, can I edit my order?",
+      "top_intent": "change_order",
+      "confidence": 0.6545862555503845,
+      "alternatives": [
+        {
+          "intent": "edit_account",
+          "confidence": 0.1928514540195465
+        },
+        {
+          "intent": "place_order",
+          "confidence": 0.08480636775493622
+        }
+      ],
+      "inference_ms": 61.61
+    },
+    {
+      "ticket": "Where is my package? It was supposed to arrive 3 days ago.",
+      "top_intent": "delivery_period",
+      "confidence": 0.9972729086875916,
+      "alternatives": [
+        {
+          "intent": "set_up_shipping_address",
+          "confidence": 0.0005131491925567389
+        },
+        {
+          "intent": "track_order",
+          "confidence": 0.00045070541091263294
+        }
+      ],
+      "inference_ms": 53.95
+    },
+    {
+      "ticket": "Please delete my account and erase all my personal data per GDPR.",
+      "top_intent": "delete_account",
+      "confidence": 0.6224550008773804,
+      "alternatives": [
+        {
+          "intent": "edit_account",
+          "confidence": 0.2905876040458679
+        },
+        {
+          "intent": "recover_password",
+          "confidence": 0.05126490071415901
+        }
+      ],
+      "inference_ms": 55.68
+    },
+    {
+      "ticket": "I want to change the shipping address for order #4521.",
+      "top_intent": "change_shipping_address",
+      "confidence": 0.9557194709777832,
+      "alternatives": [
+        {
+          "intent": "get_invoice",
+          "confidence": 0.017157983034849167
+        },
+        {
+          "intent": "change_order",
+          "confidence": 0.010946483351290226
+        }
+      ],
+      "inference_ms": 49.65
+    },
+    {
+      "ticket": "What payment methods do you accept for international orders?",
+      "top_intent": "check_payment_methods",
+      "confidence": 0.9683743715286255,
+      "alternatives": [
+        {
+          "intent": "check_refund_policy",
+          "confidence": 0.0183600801974535
+        },
+        {
+          "intent": "delivery_options",
+          "confidence": 0.005583586636930704
+        }
+      ],
+      "inference_ms": 47.66
+    },
+    {
+      "ticket": "I was charged twice for the same purchase, please look into it.",
+      "top_intent": "place_order",
+      "confidence": 0.6057993769645691,
+      "alternatives": [
+        {
+          "intent": "check_invoice",
+          "confidence": 0.19612115621566772
+        },
+        {
+          "intent": "create_account",
+          "confidence": 0.06580191850662231
+        }
+      ],
+      "inference_ms": 48.39
+    }
+  ]
+}
