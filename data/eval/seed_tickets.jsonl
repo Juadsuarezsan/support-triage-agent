@@ -1,0 +1,15 @@
+{"ticket_id":"t-001","intent":"get_refund","body":"I want a refund for my order #12345, the product arrived broken.","resolution":"Refund processed within 5 business days. Replacement also offered if preferred."}
+{"ticket_id":"t-002","intent":"track_order","body":"Where is my order #66721? It's been a week.","resolution":"Tracking link shared and carrier ETA explained. SLA: 7-10 business days for this region."}
+{"ticket_id":"t-003","intent":"cancel_order","body":"Please cancel my order #88001, I changed my mind.","resolution":"Order cancelled before shipping; full charge reverted."}
+{"ticket_id":"t-004","intent":"recover_password","body":"I can't log in, password reset email never arrives.","resolution":"Manual reset link issued; user advised to check spam folder."}
+{"ticket_id":"t-005","intent":"complaint","body":"This service is terrible, worst customer experience ever.","resolution":"Escalated to senior CS manager who called the customer."}
+{"ticket_id":"t-006","intent":"contact_human_agent","body":"Get me a real person right now.","resolution":"Transferred to live chat queue."}
+{"ticket_id":"t-007","intent":"change_order","body":"Can I change the shipping address on order #44210?","resolution":"Address updated; courier notified before pickup."}
+{"ticket_id":"t-008","intent":"get_invoice","body":"I need a copy of the invoice for order #12345 for accounting.","resolution":"PDF invoice emailed; also available in user dashboard."}
+{"ticket_id":"t-009","intent":"payment_issue","body":"My card was declined but my bank says there are no issues.","resolution":"Asked user to retry after 10 minutes; rate-limit on payment provider."}
+{"ticket_id":"t-010","intent":"check_refund_policy","body":"What is your refund policy on opened items?","resolution":"30-day return policy stated; opened items in original packaging accepted."}
+{"ticket_id":"t-011","intent":"create_account","body":"How do I create a business account?","resolution":"Linked to business sign-up flow with VAT field."}
+{"ticket_id":"t-012","intent":"delete_account","body":"Please delete my account and all my data (GDPR).","resolution":"Confirmed; data deletion within 30 days per privacy policy."}
+{"ticket_id":"t-013","intent":"delivery_options","body":"What delivery options do you offer for next-day?","resolution":"Express same-day in 12 cities, next-day nationwide; surcharge applies."}
+{"ticket_id":"t-014","intent":"general_question","body":"Do you ship to Argentina?","resolution":"Yes, 5-10 business day window via DHL."}
+{"ticket_id":"t-015","intent":"check_invoice","body":"My invoice shows the wrong VAT.","resolution":"Corrected invoice issued; finance team CC'd."}

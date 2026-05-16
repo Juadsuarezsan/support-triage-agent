@@ -1,0 +1,15 @@
+{"id":"q-01","query":"I want my money back for the damaged product","expected_intent":"get_refund","expected_decision":"suggest","expected_priority_range":["P1","P2","P3"]}
+{"id":"q-02","query":"Where is my package, it's been 10 days","expected_intent":"track_order","expected_decision":"suggest","expected_priority_range":["P1","P2","P3"]}
+{"id":"q-03","query":"Cancel my order ASAP","expected_intent":"cancel_order","expected_decision":"suggest","expected_priority_range":["P1","P2"]}
+{"id":"q-04","query":"Forgot my password","expected_intent":"recover_password","expected_decision":"suggest","expected_priority_range":["P2","P3"]}
+{"id":"q-05","query":"This is unacceptable, talk to your manager","expected_intent":"complaint","expected_decision":"escalate","expected_priority_range":["P0","P1"]}
+{"id":"q-06","query":"Connect me with a human","expected_intent":"contact_human_agent","expected_decision":"escalate","expected_priority_range":["P1","P2","P3"]}
+{"id":"q-07","query":"How do I change my shipping address","expected_intent":"change_order","expected_decision":"suggest","expected_priority_range":["P2","P3"]}
+{"id":"q-08","query":"Need a tax invoice for my last purchase","expected_intent":"get_invoice","expected_decision":"suggest","expected_priority_range":["P2","P3"]}
+{"id":"q-09","query":"My payment got rejected somehow","expected_intent":"payment_issue","expected_decision":"suggest","expected_priority_range":["P1","P2"]}
+{"id":"q-10","query":"What is your return policy","expected_intent":"check_refund_policy","expected_decision":"suggest","expected_priority_range":["P3"]}
+{"id":"q-11","query":"My factura has the wrong VAT","expected_intent":"check_invoice","expected_decision":"suggest","expected_priority_range":["P2","P3"]}
+{"id":"q-12","query":"Production is DOWN because of your service, this is critical","expected_intent":"complaint","expected_decision":"escalate","expected_priority_range":["P0"]}
+{"id":"q-13","query":"Hello, do you offer next-day shipping in Madrid?","expected_intent":"delivery_options","expected_decision":"suggest","expected_priority_range":["P3"]}
+{"id":"q-14","query":"GDPR — please delete all my data","expected_intent":"delete_account","expected_decision":"escalate","expected_priority_range":["P1","P2"]}
+{"id":"q-15","query":"I want to register for a business account","expected_intent":"create_account","expected_decision":"suggest","expected_priority_range":["P3"]}
