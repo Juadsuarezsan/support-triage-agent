@@ -3,7 +3,7 @@ name = "support-triage-agent"
 version = "0.1.0"
 description = "Customer Support Triage — DistilBERT+LoRA + Claude reasoning + similar-ticket retrieval"
 requires-python = ">=3.11,<3.14"
-authors = [{ name = "Juan David Suárez Sandoval", email = "juadsuarezsan@unal.edu.co" }]
+authors = [{ name = "Juan David Suárez Sánchez", email = "juadsuarezsan@unal.edu.co" }]
 license = { text = "MIT" }
 dependencies = [
     "fastapi==0.115.0",
