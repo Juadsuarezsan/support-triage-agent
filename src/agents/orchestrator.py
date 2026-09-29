@@ -67,19 +67,22 @@ def build_graph(store: InMemoryTicketStore):
         )
         return {"decision": decision}
 
+    # Node names must not collide with TriageState keys (LangGraph raises
+    # "'<name>' is already being used as a state key" otherwise), so every
+    # node carries a verb prefix.
     g = StateGraph(TriageState)
-    g.add_node("classify", classify_node)
-    g.add_node("sentiment", sentiment_node)
-    g.add_node("similar", similar_node)
-    g.add_node("draft", draft_node)
-    g.add_node("decide", decide_node)
+    g.add_node("classify_intent", classify_node)
+    g.add_node("analyze_priority", sentiment_node)
+    g.add_node("retrieve_similar", similar_node)
+    g.add_node("draft_solution", draft_node)
+    g.add_node("decide_route", decide_node)
 
-    g.set_entry_point("classify")
-    g.add_edge("classify", "sentiment")
-    g.add_edge("sentiment", "similar")
-    g.add_edge("similar", "draft")
-    g.add_edge("draft", "decide")
-    g.add_edge("decide", END)
+    g.set_entry_point("classify_intent")
+    g.add_edge("classify_intent", "analyze_priority")
+    g.add_edge("analyze_priority", "retrieve_similar")
+    g.add_edge("retrieve_similar", "draft_solution")
+    g.add_edge("draft_solution", "decide_route")
+    g.add_edge("decide_route", END)
     return g.compile()
 
 
