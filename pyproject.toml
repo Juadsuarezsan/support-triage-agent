@@ -100,6 +100,14 @@ module = [
 ]
 ignore_missing_imports = true
 
+# `deprecated` (transitive, via limits/slowapi) ships PEP 695 `type` statements
+# that mypy rejects when targeting python_version 3.11. It is untyped for our
+# purposes: skip following its imports on every interpreter.
+[[tool.mypy.overrides]]
+module = ["deprecated", "deprecated.*"]
+follow_imports = "skip"
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
