@@ -81,7 +81,6 @@ target-version = ["py311"]
 extend-exclude = "(\\.venv|notebooks)"
 
 [tool.mypy]
-python_version = "3.11"
 strict = true
 warn_unreachable = true
 plugins = ["pydantic.mypy"]
