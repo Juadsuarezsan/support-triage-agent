@@ -1,40 +1,123 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "support-triage-agent"
-version = "0.1.0"
-description = "Customer Support Triage — DistilBERT+LoRA + Claude reasoning + similar-ticket retrieval"
+version = "0.6.0"
+description = "Customer Support Triage — DistilBERT+LoRA intent classifier, Claude reasoning, similar-ticket retrieval and confidence-gated routing"
+readme = "README.md"
 requires-python = ">=3.11,<3.14"
 authors = [{ name = "Juan David Suárez Sánchez", email = "juadsuarezsan@unal.edu.co" }]
 license = { text = "MIT" }
 dependencies = [
+    # API
     "fastapi==0.115.0",
     "uvicorn[standard]==0.32.0",
     "pydantic==2.9.2",
     "pydantic-settings==2.6.0",
     "python-dotenv==1.0.1",
+    "slowapi==0.1.9",
+    # Resilience + logging
     "httpx==0.27.2",
     "tenacity==9.0.0",
     "loguru==0.7.2",
+    # LLM + orchestration
     "anthropic==0.39.0",
+    "langchain-core==0.3.15",
     "langchain-anthropic==0.2.4",
     "langgraph==0.2.45",
-    # Fine-tuning + classification
-    "transformers==4.45.2",
+    # Retrieval + persistence clients (servers are optional; in-memory fallbacks exist)
+    "qdrant-client==1.12.0",
+    "psycopg[binary,pool]==3.2.3",
+]
+
+[project.optional-dependencies]
+# Heavy ML stack: only needed to fine-tune / run the DistilBERT+LoRA classifier
+# and the all-mpnet-base-v2 encoder locally. Pulls torch (~2 GB).
+ml = [
     "torch==2.4.1",
+    "transformers==4.45.2",
     "peft==0.13.2",
     "accelerate==1.0.1",
     "datasets==3.0.1",
     "evaluate==0.4.3",
     "scikit-learn==1.5.2",
-    # Retrieval
     "sentence-transformers==3.2.1",
-    "qdrant-client==1.12.0",
-    # DB
-    "psycopg[binary,pool]==3.2.3",
-    # Vis
-    "matplotlib==3.9.2",
-    "seaborn==0.13.2",
+]
+# Plotting for notebooks only.
+viz = ["matplotlib==3.9.2", "seaborn==0.13.2"]
+dev = [
+    "pytest==8.3.3",
+    "pytest-cov==5.0.0",
+    "pytest-asyncio==0.24.0",
+    "pytest-mock==3.14.0",
+    "respx==0.21.1",
+    "ruff==0.6.9",
+    "black==24.10.0",
+    "mypy==1.11.2",
+    "nbformat==5.10.4",
 ]
 
-[project.optional-dependencies]
-dev = ["pytest==8.3.3", "pytest-cov==5.0.0", "pytest-asyncio==0.24.0",
-       "ruff==0.6.9", "black==24.10.0", "mypy==1.11.2"]
+[tool.setuptools.packages.find]
+include = ["src*", "eval*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "notebooks", "models"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "D"]
+ignore = ["D203", "D213", "D107", "D105", "D104"]
+per-file-ignores = { "tests/*" = ["D"], "scripts/*" = ["D"], "eval/*" = ["D"] }
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+extend-exclude = "(\\.venv|notebooks)"
+
+[tool.mypy]
+strict = true
+warn_unreachable = true
+plugins = ["pydantic.mypy"]
+exclude = ["\\.venv", "notebooks", "build"]
+
+[[tool.mypy.overrides]]
+module = [
+    "transformers", "transformers.*",
+    "sentence_transformers", "sentence_transformers.*",
+    "peft", "peft.*",
+    "datasets", "datasets.*",
+    "slowapi", "slowapi.*",
+    "langgraph", "langgraph.*",
+    "langchain_anthropic", "langchain_anthropic.*",
+    "langchain_core", "langchain_core.*",
+]
+ignore_missing_imports = true
+
+# `deprecated` (transitive, via limits/slowapi) ships PEP 695 `type` statements
+# that mypy rejects when targeting python_version 3.11. It is untyped for our
+# purposes: skip following its imports on every interpreter.
+[[tool.mypy.overrides]]
+module = ["deprecated", "deprecated.*"]
+follow_imports = "skip"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-q --strict-markers"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["src/__init__.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false

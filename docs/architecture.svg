@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="13">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5b6675"/>
+    </marker>
+  </defs>
+  <rect width="980" height="560" fill="#ffffff"/>
+  <text x="24" y="32" font-size="18" font-weight="600" fill="#17202b">Customer Support Triage Agent · flujo de una petición</text>
+  <text x="24" y="52" fill="#5b6675">FastAPI → LangGraph (6 nodos) → decisión auto-resolve / suggest / escalate → audit log. Cada nodo loguea entrada/salida con trace_id.</text>
+
+  <!-- transport -->
+  <rect x="24" y="80" width="200" height="72" rx="10" fill="#eef1f5" stroke="#d9dee7"/>
+  <text x="124" y="106" text-anchor="middle" font-weight="600" fill="#17202b">FastAPI · src/api</text>
+  <text x="124" y="126" text-anchor="middle" fill="#5b6675">POST /api/triage · Pydantic 422</text>
+  <text x="124" y="142" text-anchor="middle" fill="#5b6675">slowapi · CORS por env · /health</text>
+
+  <!-- graph frame -->
+  <rect x="256" y="72" width="700" height="300" rx="14" fill="none" stroke="#2f6df6" stroke-dasharray="6 4"/>
+  <text x="272" y="94" fill="#2f6df6" font-weight="600">LangGraph StateGraph(TriageState) · src/agents/orchestrator.py</text>
+
+  <!-- nodes row 1 -->
+  <g>
+    <rect x="276" y="112" width="200" height="84" rx="10" fill="#ffffff" stroke="#2f6df6"/>
+    <text x="376" y="134" text-anchor="middle" font-weight="600" fill="#17202b">1 classify_intent</text>
+    <text x="376" y="152" text-anchor="middle" fill="#5b6675">DistilBERT+LoRA (ml) →</text>
+    <text x="376" y="168" text-anchor="middle" fill="#5b6675">Claude zero-shot → keyword</text>
+    <text x="376" y="184" text-anchor="middle" fill="#8a94a6">intents[], backend, tokens</text>
+  </g>
+  <g>
+    <rect x="506" y="112" width="200" height="84" rx="10" fill="#ffffff" stroke="#2f6df6"/>
+    <text x="606" y="134" text-anchor="middle" font-weight="600" fill="#17202b">2 analyze_priority</text>
+    <text x="606" y="152" text-anchor="middle" fill="#5b6675">Claude JSON estructurado</text>
+    <text x="606" y="168" text-anchor="middle" fill="#5b6675">(fallback heurístico)</text>
+    <text x="606" y="184" text-anchor="middle" fill="#8a94a6">sentiment, priority, urgency</text>
+  </g>
+  <g>
+    <rect x="736" y="112" width="200" height="84" rx="10" fill="#ffffff" stroke="#2f6df6"/>
+    <text x="836" y="134" text-anchor="middle" font-weight="600" fill="#17202b">3 retrieve_similar</text>
+    <text x="836" y="152" text-anchor="middle" fill="#5b6675">encoder con cache SHA-256</text>
+    <text x="836" y="168" text-anchor="middle" fill="#5b6675">Qdrant | in-memory cosine</text>
+    <text x="836" y="184" text-anchor="middle" fill="#8a94a6">top-5 resueltos + resoluciones</text>
+  </g>
+  <!-- nodes row 2 -->
+  <g>
+    <rect x="736" y="232" width="200" height="84" rx="10" fill="#ffffff" stroke="#2f6df6"/>
+    <text x="836" y="254" text-anchor="middle" font-weight="600" fill="#17202b">4 draft_solution</text>
+    <text x="836" y="272" text-anchor="middle" fill="#5b6675">Claude con evidencia</text>
+    <text x="836" y="288" text-anchor="middle" fill="#5b6675">(plantilla sin llave)</text>
+    <text x="836" y="304" text-anchor="middle" fill="#8a94a6">draft ≤100 palabras</text>
+  </g>
+  <g>
+    <rect x="506" y="232" width="200" height="84" rx="10" fill="#ffffff" stroke="#2f6df6"/>
+    <text x="606" y="254" text-anchor="middle" font-weight="600" fill="#17202b">5 decide_route</text>
+    <text x="606" y="272" text-anchor="middle" fill="#5b6675">score = .5·intent + .4·sim + .1</text>
+    <text x="606" y="288" text-anchor="middle" fill="#5b6675">− penalizaciones · reglas duras</text>
+    <text x="606" y="304" text-anchor="middle" fill="#8a94a6">≥.85 auto · ≥.60 suggest · &lt;.60 escalate</text>
+  </g>
+  <g>
+    <rect x="276" y="232" width="200" height="84" rx="10" fill="#ffffff" stroke="#2f6df6"/>
+    <text x="376" y="254" text-anchor="middle" font-weight="600" fill="#17202b">6 record_audit</text>
+    <text x="376" y="272" text-anchor="middle" fill="#5b6675">AuditRecord → Postgres</text>
+    <text x="376" y="288" text-anchor="middle" fill="#5b6675">(psycopg pool) | memoria</text>
+    <text x="376" y="304" text-anchor="middle" fill="#8a94a6">scores, tokens, cost_usd, latencia</text>
+  </g>
+
+  <!-- arrows -->
+  <line x1="224" y1="116" x2="276" y2="154" stroke="#5b6675" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="476" y1="154" x2="506" y2="154" stroke="#5b6675" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="706" y1="154" x2="736" y2="154" stroke="#5b6675" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="836" y1="196" x2="836" y2="232" stroke="#5b6675" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="736" y1="274" x2="706" y2="274" stroke="#5b6675" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="506" y1="274" x2="476" y2="274" stroke="#5b6675" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="276" y1="274" x2="224" y2="140" stroke="#5b6675" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="236" y="216" fill="#5b6675" transform="rotate(-68 236 216)">TriageOut</text>
+
+  <!-- shared services -->
+  <rect x="24" y="400" width="290" height="132" rx="10" fill="#eef1f5" stroke="#d9dee7"/>
+  <text x="40" y="424" font-weight="600" fill="#17202b">src/llm/claude.py · ClaudeClient</text>
+  <text x="40" y="444" fill="#5b6675">anthropic.AsyncAnthropic · claude-sonnet-4-5-20250929</text>
+  <text x="40" y="462" fill="#5b6675">timeout 15 s · tenacity backoff (429/5xx/529)</text>
+  <text x="40" y="480" fill="#5b6675">extract_json → Pydantic → LLMOutputError</text>
+  <text x="40" y="498" fill="#5b6675">TokenUsage → cost_usd por request</text>
+  <text x="40" y="516" fill="#8a94a6">usado por nodos 1 (zero-shot), 2 y 4 y por el juez</text>
+
+  <rect x="344" y="400" width="290" height="132" rx="10" fill="#eef1f5" stroke="#d9dee7"/>
+  <text x="360" y="424" font-weight="600" fill="#17202b">src/observability.py</text>
+  <text x="360" y="444" fill="#5b6675">trace_id (contextvar) en cada línea de log</text>
+  <text x="360" y="462" fill="#5b6675">log_node_io: claves de entrada + salida por nodo</text>
+  <text x="360" y="480" fill="#5b6675">niveles DEBUG/INFO/WARNING/ERROR (LOG_LEVEL)</text>
+  <text x="360" y="498" fill="#5b6675">LangSmith vía LANGCHAIN_TRACING_V2 + API key</text>
+  <text x="360" y="516" fill="#8a94a6">sin llave: traces solo locales</text>
+
+  <rect x="664" y="400" width="292" height="132" rx="10" fill="#eef1f5" stroke="#d9dee7"/>
+  <text x="680" y="424" font-weight="600" fill="#17202b">src/eval + eval/run.py</text>
+  <text x="680" y="444" fill="#5b6675">108 tickets sintéticos · 27 intents</text>
+  <text x="680" y="462" fill="#5b6675">macro-F1, auto-resolve, false-escalation,</text>
+  <text x="680" y="480" fill="#5b6675">false auto-resolve, p50/p95, costo/ticket</text>
+  <text x="680" y="498" fill="#5b6675">judge: rúbrica numerada (helpfulness/tone/correctness)</text>
+  <text x="680" y="516" fill="#8a94a6">escribe eval/runs/*.json → eval/RESULTS.md</text>
+</svg>

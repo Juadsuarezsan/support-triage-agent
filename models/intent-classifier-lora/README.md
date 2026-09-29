@@ -1,206 +1,108 @@
 ---
 base_model: distilbert-base-uncased
 library_name: peft
-tags:
-- base_model:adapter:distilbert-base-uncased
-- lora
-- transformers
+license: mit
+language: [en]
+tags: [lora, text-classification, customer-support, intent-classification, bitext]
+datasets: [bitext/Bitext-customer-support-llm-chatbot-training-dataset]
+metrics: [f1]
+model-index:
+  - name: distilbert-support-intent-lora
+    results:
+      - task: { type: text-classification, name: Customer-support intent classification }
+        dataset:
+          name: Bitext Customer Support (stratified subset, 4,482 rows)
+          type: bitext/Bitext-customer-support-llm-chatbot-training-dataset
+          split: test (449 examples)
+        metrics:
+          - { type: f1, name: Macro-F1, value: 0.9864 }
 ---
 
-# Model Card for Model ID
+# distilbert-support-intent-lora
 
-<!-- Provide a quick summary of what the model is/does. -->
+LoRA adapter (r=8, alpha=16, dropout 0.1 on `q_lin` and `v_lin`) on top of
+`distilbert-base-uncased` for 27-way customer-support intent classification.
+Trained for the [Customer Support Triage Agent](https://github.com/Juadsuarezsan/support-triage-agent),
+where it is the first node of a LangGraph triage flow.
 
+**Publication status:** the adapter weights (`adapter_model.safetensors`) are
+not yet on the Hugging Face Hub; this card, the adapter config, the tokenizer
+and `label_mapping.json` are versioned in the repository. Publishing needs a
+write token for `Juadsuarezsan/distilbert-support-intent-lora`.
 
+## Intended use
 
-## Model Details
+Route English customer-support tickets to one of the 27 Bitext intents
+(`cancel_order`, `get_refund`, `track_order`, `contact_human_agent`, ...).
+Downstream, a rule-based router combines the top score with retrieval
+similarity and sentiment to decide auto-resolve / suggest / escalate.
 
-### Model Description
+Out of scope: languages other than English, multi-intent tickets, tickets
+longer than 128 tokens (truncated), and anything outside e-commerce/account
+support.
 
-<!-- Provide a longer summary of what this model is. -->
+## Training data
 
+Bitext Customer Support LLM Chatbot Training Dataset (CC BY 4.0), 26,872
+`instruction`/`intent` pairs. A stratified subset of 4,482 rows (~166 per
+intent) was drawn with seed 20260516 and split 80/10/10:
+train 3,585 / val 448 / test 449.
 
+## Training procedure
 
-- **Developed by:** [More Information Needed]
-- **Funded by [optional]:** [More Information Needed]
-- **Shared by [optional]:** [More Information Needed]
-- **Model type:** [More Information Needed]
-- **Language(s) (NLP):** [More Information Needed]
-- **License:** [More Information Needed]
-- **Finetuned from model [optional]:** [More Information Needed]
-
-### Model Sources [optional]
-
-<!-- Provide the basic links for the model. -->
-
-- **Repository:** [More Information Needed]
-- **Paper [optional]:** [More Information Needed]
-- **Demo [optional]:** [More Information Needed]
-
-## Uses
-
-<!-- Address questions around how the model is intended to be used, including the foreseeable users of the model and those affected by the model. -->
-
-### Direct Use
-
-<!-- This section is for the model use without fine-tuning or plugging into a larger ecosystem/app. -->
-
-[More Information Needed]
-
-### Downstream Use [optional]
-
-<!-- This section is for the model use when fine-tuned for a task, or when plugged into a larger ecosystem/app -->
-
-[More Information Needed]
-
-### Out-of-Scope Use
-
-<!-- This section addresses misuse, malicious use, and uses that the model will not work well for. -->
-
-[More Information Needed]
-
-## Bias, Risks, and Limitations
-
-<!-- This section is meant to convey both technical and sociotechnical limitations. -->
-
-[More Information Needed]
-
-### Recommendations
-
-<!-- This section is meant to convey recommendations with respect to the bias, risk, and technical limitations. -->
-
-Users (both direct and downstream) should be made aware of the risks, biases and limitations of the model. More information needed for further recommendations.
-
-## How to Get Started with the Model
-
-Use the code below to get started with the model.
-
-[More Information Needed]
-
-## Training Details
-
-### Training Data
-
-<!-- This should link to a Dataset Card, perhaps with a short stub of information on what the training data is all about as well as documentation related to data pre-processing or additional filtering. -->
-
-[More Information Needed]
-
-### Training Procedure
-
-<!-- This relates heavily to the Technical Specifications. Content here should link to that section when it is relevant to the training procedure. -->
-
-#### Preprocessing [optional]
-
-[More Information Needed]
-
-
-#### Training Hyperparameters
-
-- **Training regime:** [More Information Needed] <!--fp32, fp16 mixed precision, bf16 mixed precision, bf16 non-mixed precision, fp16 non-mixed precision, fp8 mixed precision -->
-
-#### Speeds, Sizes, Times [optional]
-
-<!-- This section provides information about throughput, start/end time, checkpoint size if relevant, etc. -->
-
-[More Information Needed]
+- Script: `notebooks/01_classifier_training.py` (CPU, seed 20260516)
+- 2 epochs, batch 16, lr 5e-4, AdamW, max length 128, fp32
+- Trainable parameters: ~750 K of ~67 M
+- Wall time: 199 s on CPU
 
 ## Evaluation
 
-<!-- This section describes the evaluation protocols and provides the results. -->
+| Split | n | Macro-F1 |
+|---|---|---|
+| test (stratified subset) | 449 | **0.9864** |
 
-### Testing Data, Factors & Metrics
+Per-class F1 is in `training_metrics.json`; 18 of 27 classes reach 1.0. The
+weakest classes are `delete_account` (0.929), `track_refund` (0.941),
+`get_refund` (0.952) and `review` (0.952): semantically neighbouring labels
+(refund ×3, account ×3, contact ×2). See `docs/error_analysis.md` in the
+repository. With ~17 test examples per class, one error moves a class F1 by
+~0.06, so rankings below rank 5 are within noise. Evaluation on the full 10 %
+test split (2,687 examples) is pending.
 
-#### Testing Data
+## How to use
 
-<!-- This should link to a Dataset Card if possible. -->
+```python
+import json
+from peft import PeftModel
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-[More Information Needed]
+path = "models/intent-classifier-lora"  # or the Hub ID once published
+mapping = json.load(open(f"{path}/label_mapping.json"))
+id2label = {int(k): v for k, v in mapping["id2label"].items()}
+base = AutoModelForSequenceClassification.from_pretrained(
+    "distilbert-base-uncased", num_labels=27, id2label=id2label, label2id=mapping["label2id"]
+)
+model = PeftModel.from_pretrained(base, path).eval()
+tok = AutoTokenizer.from_pretrained(path)
+enc = tok("I want a refund for my order", return_tensors="pt", truncation=True, max_length=128)
+print(id2label[int(model(**enc).logits.argmax(-1))])  # get_refund
+```
 
-#### Factors
+## Limitations and risks
 
-<!-- These are the things the evaluation is disaggregating by, e.g., subpopulations or domains. -->
+- Trained on templated synthetic data: spelling errors, emoji, code-switching
+  and long multi-issue tickets will degrade accuracy.
+- The label set is fixed; unseen intents are forced into the nearest class
+  with a possibly high score. The triage router mitigates this with the
+  similarity term and hard escalation rules, not the classifier.
+- No demographic or fairness evaluation was performed; ticket text may
+  contain personal data that must be handled by the calling system.
 
-[More Information Needed]
+## License
 
-#### Metrics
+Adapter: MIT. Base model: Apache 2.0 (`distilbert-base-uncased`). Dataset:
+CC BY 4.0 (Bitext); verify Bitext's terms for commercial deployment.
 
-<!-- These are the evaluation metrics being used, ideally with a description of why. -->
+## Contact
 
-[More Information Needed]
-
-### Results
-
-[More Information Needed]
-
-#### Summary
-
-
-
-## Model Examination [optional]
-
-<!-- Relevant interpretability work for the model goes here -->
-
-[More Information Needed]
-
-## Environmental Impact
-
-<!-- Total emissions (in grams of CO2eq) and additional considerations, such as electricity usage, go here. Edit the suggested text below accordingly -->
-
-Carbon emissions can be estimated using the [Machine Learning Impact calculator](https://mlco2.github.io/impact#compute) presented in [Lacoste et al. (2019)](https://arxiv.org/abs/1910.09700).
-
-- **Hardware Type:** [More Information Needed]
-- **Hours used:** [More Information Needed]
-- **Cloud Provider:** [More Information Needed]
-- **Compute Region:** [More Information Needed]
-- **Carbon Emitted:** [More Information Needed]
-
-## Technical Specifications [optional]
-
-### Model Architecture and Objective
-
-[More Information Needed]
-
-### Compute Infrastructure
-
-[More Information Needed]
-
-#### Hardware
-
-[More Information Needed]
-
-#### Software
-
-[More Information Needed]
-
-## Citation [optional]
-
-<!-- If there is a paper or blog post introducing the model, the APA and Bibtex information for that should go in this section. -->
-
-**BibTeX:**
-
-[More Information Needed]
-
-**APA:**
-
-[More Information Needed]
-
-## Glossary [optional]
-
-<!-- If relevant, include terms and calculations in this section that can help readers understand the model or model card. -->
-
-[More Information Needed]
-
-## More Information [optional]
-
-[More Information Needed]
-
-## Model Card Authors [optional]
-
-[More Information Needed]
-
-## Model Card Contact
-
-[More Information Needed]
-### Framework versions
-
-- PEFT 0.19.1
+Juan David Suárez Sánchez · juadsuarezsan@unal.edu.co

@@ -1,15 +1,108 @@
-{"id":"q-01","query":"I want my money back for the damaged product","expected_intent":"get_refund","expected_decision":"suggest","expected_priority_range":["P1","P2","P3"]}
-{"id":"q-02","query":"Where is my package, it's been 10 days","expected_intent":"track_order","expected_decision":"suggest","expected_priority_range":["P1","P2","P3"]}
-{"id":"q-03","query":"Cancel my order ASAP","expected_intent":"cancel_order","expected_decision":"suggest","expected_priority_range":["P1","P2"]}
-{"id":"q-04","query":"Forgot my password","expected_intent":"recover_password","expected_decision":"suggest","expected_priority_range":["P2","P3"]}
-{"id":"q-05","query":"This is unacceptable, talk to your manager","expected_intent":"complaint","expected_decision":"escalate","expected_priority_range":["P0","P1"]}
-{"id":"q-06","query":"Connect me with a human","expected_intent":"contact_human_agent","expected_decision":"escalate","expected_priority_range":["P1","P2","P3"]}
-{"id":"q-07","query":"How do I change my shipping address","expected_intent":"change_order","expected_decision":"suggest","expected_priority_range":["P2","P3"]}
-{"id":"q-08","query":"Need a tax invoice for my last purchase","expected_intent":"get_invoice","expected_decision":"suggest","expected_priority_range":["P2","P3"]}
-{"id":"q-09","query":"My payment got rejected somehow","expected_intent":"payment_issue","expected_decision":"suggest","expected_priority_range":["P1","P2"]}
-{"id":"q-10","query":"What is your return policy","expected_intent":"check_refund_policy","expected_decision":"suggest","expected_priority_range":["P3"]}
-{"id":"q-11","query":"My factura has the wrong VAT","expected_intent":"check_invoice","expected_decision":"suggest","expected_priority_range":["P2","P3"]}
-{"id":"q-12","query":"Production is DOWN because of your service, this is critical","expected_intent":"complaint","expected_decision":"escalate","expected_priority_range":["P0"]}
-{"id":"q-13","query":"Hello, do you offer next-day shipping in Madrid?","expected_intent":"delivery_options","expected_decision":"suggest","expected_priority_range":["P3"]}
-{"id":"q-14","query":"GDPR — please delete all my data","expected_intent":"delete_account","expected_decision":"escalate","expected_priority_range":["P1","P2"]}
-{"id":"q-15","query":"I want to register for a business account","expected_intent":"create_account","expected_decision":"suggest","expected_priority_range":["P3"]}
+{"id":"q-001","query":"I want my money back for the damaged product I received last week","expected_intent":"get_refund","expected_decision":"suggest","expected_priority_range":["P1","P2","P3"],"synthetic":true}
+{"id":"q-002","query":"The headphones arrived broken, please reimburse me for order 55021","expected_intent":"get_refund","expected_decision":"suggest","expected_priority_range":["P1","P2","P3"],"synthetic":true}
+{"id":"q-003","query":"Can I get a refund? The jacket is two sizes smaller than the size chart says","expected_intent":"get_refund","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-004","query":"I need a refund, the item was never delivered and the carrier marked it as lost","expected_intent":"get_refund","expected_decision":"suggest","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-005","query":"Where is my package? It has been 10 days and the tracking page has not changed","expected_intent":"track_order","expected_decision":"auto_resolve","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-006","query":"Can you tell me the status of my order 77120?","expected_intent":"track_order","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-007","query":"My order still hasn't arrived, I'd like to track it","expected_intent":"track_order","expected_decision":"auto_resolve","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-008","query":"Is there a way to track my order? I never got a tracking number","expected_intent":"track_order","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-009","query":"Cancel my order ASAP, I ordered the wrong color","expected_intent":"cancel_order","expected_decision":"suggest","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-010","query":"Please cancel order 88001, I no longer need it","expected_intent":"cancel_order","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-011","query":"I would like to cancel the purchase I made this morning before it ships","expected_intent":"cancel_order","expected_decision":"suggest","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-012","query":"How do I cancel an order that I placed by mistake?","expected_intent":"cancel_order","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-013","query":"Forgot my password and the reset email never arrives","expected_intent":"recover_password","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-014","query":"I am locked out of my account, can you help me log in again?","expected_intent":"recover_password","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-015","query":"How can I recover my password? I don't remember it","expected_intent":"recover_password","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-016","query":"The login page says my password is wrong but I am sure it is correct","expected_intent":"recover_password","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-017","query":"This is unacceptable, I want to talk to your manager about how I was treated","expected_intent":"complaint","expected_decision":"escalate","expected_priority_range":["P0","P1"],"synthetic":true}
+{"id":"q-018","query":"I want to file a complaint, the courier threw my parcel over the fence","expected_intent":"complaint","expected_decision":"escalate","expected_priority_range":["P0","P1"],"synthetic":true}
+{"id":"q-019","query":"Worst service ever. Three weeks and nobody answers my emails","expected_intent":"complaint","expected_decision":"escalate","expected_priority_range":["P0","P1"],"synthetic":true}
+{"id":"q-020","query":"Production is DOWN because of your billing outage, this is critical and unacceptable","expected_intent":"complaint","expected_decision":"escalate","expected_priority_range":["P0"],"synthetic":true}
+{"id":"q-021","query":"Connect me with a human, the bot is not understanding me","expected_intent":"contact_human_agent","expected_decision":"escalate","expected_priority_range":["P1","P2","P3"],"synthetic":true}
+{"id":"q-022","query":"I need to speak to someone from your team, a real person please","expected_intent":"contact_human_agent","expected_decision":"escalate","expected_priority_range":["P1","P2","P3"],"synthetic":true}
+{"id":"q-023","query":"Is there a live agent available right now?","expected_intent":"contact_human_agent","expected_decision":"escalate","expected_priority_range":["P1","P2","P3"],"synthetic":true}
+{"id":"q-024","query":"Can I talk to a person instead of this automated system?","expected_intent":"contact_human_agent","expected_decision":"escalate","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-025","query":"I forgot to add an item to my cart, can I edit my order?","expected_intent":"change_order","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-026","query":"I want to modify my order and change the size from M to L","expected_intent":"change_order","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-027","query":"Could you add another item to order 44210 before it ships?","expected_intent":"change_order","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-028","query":"Is it possible to change my order? I picked the wrong model","expected_intent":"change_order","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-029","query":"Need a tax invoice for my last purchase for my accounting department","expected_intent":"get_invoice","expected_decision":"auto_resolve","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-030","query":"Where can I download the invoice for order 12345?","expected_intent":"get_invoice","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-031","query":"Please send me a receipt for the payment I made yesterday","expected_intent":"get_invoice","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-032","query":"I need a copy of the invoice from March to claim expenses","expected_intent":"get_invoice","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-033","query":"My payment got rejected somehow even though my card has funds","expected_intent":"payment_issue","expected_decision":"suggest","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-034","query":"I was charged twice for the same purchase, please look into it","expected_intent":"payment_issue","expected_decision":"escalate","expected_priority_range":["P0","P1"],"synthetic":true}
+{"id":"q-035","query":"The checkout shows a payment error every time I try to pay","expected_intent":"payment_issue","expected_decision":"suggest","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-036","query":"My card was declined but my bank says there are no issues on their side","expected_intent":"payment_issue","expected_decision":"suggest","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-037","query":"What is your return policy for opened items?","expected_intent":"check_refund_policy","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-038","query":"Am I eligible for a refund if I change my mind after 20 days?","expected_intent":"check_refund_policy","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-039","query":"Can I get a refund on sale items or are they final?","expected_intent":"check_refund_policy","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-040","query":"Could you explain the refund policy for digital products?","expected_intent":"check_refund_policy","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-041","query":"My invoice shows the wrong VAT number for my company","expected_intent":"check_invoice","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-042","query":"I want to check my invoice, the total does not match what I paid","expected_intent":"check_invoice","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-043","query":"The invoice is wrong, it lists three items but I only bought two","expected_intent":"check_invoice","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-044","query":"Can you verify the invoice for order 9981? The billing address is outdated","expected_intent":"check_invoice","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-045","query":"Hello, do you offer next-day shipping in Madrid?","expected_intent":"delivery_options","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-046","query":"What delivery options are available for international orders?","expected_intent":"delivery_options","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-047","query":"Do you have express or same-day delivery for large items?","expected_intent":"delivery_options","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-048","query":"Can I choose a pickup point as a shipping option?","expected_intent":"delivery_options","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-049","query":"GDPR request: please delete all my data and close my account","expected_intent":"delete_account","expected_decision":"escalate","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-050","query":"I want to delete my account permanently, how do I do that?","expected_intent":"delete_account","expected_decision":"escalate","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-051","query":"Please remove my account and erase my data from your systems","expected_intent":"delete_account","expected_decision":"escalate","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-052","query":"How can I close my account? I no longer use the service","expected_intent":"delete_account","expected_decision":"escalate","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-053","query":"I want to register for a business account with VAT invoicing","expected_intent":"create_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-054","query":"How do I sign up for a new account?","expected_intent":"create_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-055","query":"Can you help me open an account for my daughter?","expected_intent":"create_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-056","query":"I'd like to create an account but I don't see the button on mobile","expected_intent":"create_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-057","query":"I want to change my shipping address on order 4521 before it leaves the warehouse","expected_intent":"change_shipping_address","expected_decision":"suggest","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-058","query":"I typed the wrong address at checkout, can you update the address?","expected_intent":"change_shipping_address","expected_decision":"suggest","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-059","query":"I moved last week, please change the delivery address for my pending order","expected_intent":"change_shipping_address","expected_decision":"suggest","expected_priority_range":["P1","P2"],"synthetic":true}
+{"id":"q-060","query":"How do I change the shipping address for an order that is already paid?","expected_intent":"change_shipping_address","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-061","query":"Is there a cancellation fee if I cancel my subscription today?","expected_intent":"check_cancellation_fee","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-062","query":"How much is the penalty for cancelling an order after it has shipped?","expected_intent":"check_cancellation_fee","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-063","query":"Do you charge for cancelling a pre-order?","expected_intent":"check_cancellation_fee","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-064","query":"What is the fee for cancelling a premium plan mid-cycle?","expected_intent":"check_cancellation_fee","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-065","query":"What payment methods do you accept for international orders?","expected_intent":"check_payment_methods","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-066","query":"Do you accept PayPal or only credit cards?","expected_intent":"check_payment_methods","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-067","query":"Can I pay with a bank transfer or Apple Pay?","expected_intent":"check_payment_methods","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-068","query":"Which ways to pay are available at checkout in Colombia?","expected_intent":"check_payment_methods","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-069","query":"How do I contact customer service? I can't find a phone number","expected_intent":"contact_customer_service","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-070","query":"What are your support hours during the holidays?","expected_intent":"contact_customer_service","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-071","query":"Is there an email address to contact support about a bulk order?","expected_intent":"contact_customer_service","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-072","query":"What are the opening hours of your customer service chat?","expected_intent":"contact_customer_service","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-073","query":"How long does delivery take to Argentina?","expected_intent":"delivery_period","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-074","query":"When will it arrive if I order today with standard shipping?","expected_intent":"delivery_period","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-075","query":"What is the estimated delivery period for furniture?","expected_intent":"delivery_period","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-076","query":"What is the shipping time for orders placed on Friday evening?","expected_intent":"delivery_period","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-077","query":"I want to edit my account and update my phone number","expected_intent":"edit_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-078","query":"How do I update my profile picture and display name?","expected_intent":"edit_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-079","query":"I need to change my email address on the account, the old one is gone","expected_intent":"edit_account","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-080","query":"Can you update my details? My surname is misspelled in the account","expected_intent":"edit_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-081","query":"I want to unsubscribe from the newsletter, I get too many emails","expected_intent":"newsletter_subscription","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-082","query":"How do I subscribe to your newsletter for deals?","expected_intent":"newsletter_subscription","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-083","query":"Please remove me from the mailing list","expected_intent":"newsletter_subscription","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-084","query":"I signed up for the newsletter but never receive it","expected_intent":"newsletter_subscription","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-085","query":"I want to place an order for 50 units for my shop, how do I do it?","expected_intent":"place_order","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-086","query":"How can I buy the blue version that shows as sold out?","expected_intent":"place_order","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-087","query":"I'd like to purchase a gift card for a friend, where do I start?","expected_intent":"place_order","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-088","query":"Can I place my order by phone instead of the website?","expected_intent":"place_order","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-089","query":"I get a registration error every time I try to sign up with my phone number","expected_intent":"registration_problems","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-090","query":"I cannot register, the site says my email is already in use","expected_intent":"registration_problems","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-091","query":"There is an error creating my account, the verification code never comes","expected_intent":"registration_problems","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-092","query":"Signup error: the form resets after I click submit","expected_intent":"registration_problems","expected_decision":"suggest","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-093","query":"I want to leave a review for the blender I bought","expected_intent":"review","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-094","query":"Where can I leave a comment about the delivery driver?","expected_intent":"review","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-095","query":"I'd like to rate my recent purchase, how do I do that?","expected_intent":"review","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-096","query":"How do I submit feedback about the app?","expected_intent":"review","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-097","query":"I want to add a shipping address for my office","expected_intent":"set_up_shipping_address","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-098","query":"How do I set up a shipping address for the first time?","expected_intent":"set_up_shipping_address","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-099","query":"Can I save an address so I don't type it every time?","expected_intent":"set_up_shipping_address","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-100","query":"I need to add an address in another country to my account","expected_intent":"set_up_shipping_address","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-101","query":"I want to switch account from personal to business","expected_intent":"switch_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-102","query":"How do I upgrade my account to the premium account tier?","expected_intent":"switch_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-103","query":"Can I downgrade to the free plan without losing my order history?","expected_intent":"switch_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-104","query":"I need to change account type to a family account","expected_intent":"switch_account","expected_decision":"suggest","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-105","query":"I want to track my refund, it was approved 8 days ago","expected_intent":"track_refund","expected_decision":"auto_resolve","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-106","query":"What is the refund status for order 3310?","expected_intent":"track_refund","expected_decision":"auto_resolve","expected_priority_range":["P3"],"synthetic":true}
+{"id":"q-107","query":"Where is my refund? I returned the item two weeks ago","expected_intent":"track_refund","expected_decision":"auto_resolve","expected_priority_range":["P2","P3"],"synthetic":true}
+{"id":"q-108","query":"I haven't received my money back yet from the return I sent","expected_intent":"track_refund","expected_decision":"auto_resolve","expected_priority_range":["P2","P3"],"synthetic":true}
