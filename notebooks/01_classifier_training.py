@@ -13,7 +13,7 @@ import numpy as np
 import torch
 from datasets import load_dataset
 from peft import LoraConfig, TaskType, get_peft_model
-from sklearn.metrics import classification_report, f1_score
+from sklearn.metrics import classification_report, confusion_matrix, f1_score
 from transformers import (
     AutoModelForSequenceClassification, AutoTokenizer,
     DataCollatorWithPadding, Trainer, TrainingArguments,
@@ -118,6 +118,11 @@ def main() -> None:
     tokenizer.save_pretrained(str(OUT_DIR))
     with open(OUT_DIR / "label_mapping.json", "w") as f:
         json.dump({"label2id": label2id, "id2label": id2label}, f, indent=2)
+    # Full confusion matrix (rows = gold, columns = predicted) so
+    # scripts/plot_classifier_metrics.py can render the heatmap.
+    cm = confusion_matrix(y_true, y_pred, labels=list(range(len(intents))))
+    with open(OUT_DIR / "confusion_matrix.json", "w") as f:
+        json.dump({"labels": intents, "matrix": cm.tolist()}, f)
     with open(OUT_DIR / "training_metrics.json", "w") as f:
         json.dump({
             "base_model": BASE_MODEL,
