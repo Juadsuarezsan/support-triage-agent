@@ -121,8 +121,11 @@ def test_build_classifier_falls_back_to_heuristic_without_key_or_model() -> None
     assert isinstance(build_classifier(settings), KeywordHeuristicClassifier)
 
 
-def test_build_classifier_uses_zero_shot_with_key() -> None:
-    settings = Settings(anthropic_api_key="k", use_local_classifier=False)
+def test_build_classifier_uses_zero_shot_with_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    # CI exports ANTHROPIC_API_KEY="" ; an env value bound to the alias outranks
+    # an init kwarg given by field name, so clear it and pass the alias.
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    settings = Settings(ANTHROPIC_API_KEY="k", USE_LOCAL_CLASSIFIER=False)
     assert isinstance(build_classifier(settings), ClaudeZeroShotClassifier)
 
 
