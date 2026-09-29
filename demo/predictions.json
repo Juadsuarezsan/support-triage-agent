@@ -1,168 +1,578 @@
 {
-  "model": "distilbert-base-uncased + LoRA r=8",
-  "n_labels": 27,
-  "test_macro_f1": 0.9864,
-  "generated_at": "2026-05-16T21:37:31Z",
-  "predictions": [
+  "generated_at": "2026-09-29T01:21:33+00:00",
+  "api_version": "0.6.0",
+  "mode": "fallback determinista, sin LLM",
+  "classifier_backend": "keyword_heuristic",
+  "model": null,
+  "note": "Outputs produced by src/ with the deterministic fallback (keyword classifier, heuristic priority, template reply, hashed encoder). They are NOT the production system's quality; run with ANTHROPIC_API_KEY and the ml extra for real outputs.",
+  "tickets": [
     {
-      "ticket": "I'd like a refund for the order I placed yesterday \u2014 it never arrived.",
-      "top_intent": "get_refund",
-      "confidence": 0.5660179853439331,
-      "alternatives": [
-        {
-          "intent": "check_refund_policy",
-          "confidence": 0.1869741678237915
+      "ticket": {
+        "ticket_id": "d-101",
+        "channel": "email",
+        "body": "I'd like a refund for the order I placed yesterday, it arrived broken."
+      },
+      "result": {
+        "ticket_id": "d-101",
+        "trace_id": "cb2af32de39f409bab4be6d5f348d84e",
+        "intent": "get_refund",
+        "intent_confidence": 0.7,
+        "top_intents": [
+          {
+            "intent": "get_refund",
+            "score": 0.7
+          }
+        ],
+        "classifier_backend": "keyword_heuristic",
+        "priority": "P3",
+        "sentiment": "neu",
+        "urgency_score": 0.2,
+        "similar_resolved": [
+          {
+            "ticket_id": "t-001",
+            "intent": "get_refund",
+            "body_snippet": "I want a refund for my order #12345, the product arrived broken.",
+            "resolution_snippet": "Refund processed within 5 business days. Replacement also offered if preferred.",
+            "similarity": 0.770803
+          },
+          {
+            "ticket_id": "t-008",
+            "intent": "get_invoice",
+            "body_snippet": "I need a copy of the invoice for order #12345 for accounting.",
+            "resolution_snippet": "PDF invoice emailed; also available in user dashboard.",
+            "similarity": 0.602586
+          },
+          {
+            "ticket_id": "t-007",
+            "intent": "change_order",
+            "body_snippet": "Can I change the shipping address on order #44210?",
+            "resolution_snippet": "Address updated; courier notified before pickup.",
+            "similarity": 0.44623
+          },
+          {
+            "ticket_id": "t-011",
+            "intent": "create_account",
+            "body_snippet": "How do I create a business account?",
+            "resolution_snippet": "Linked to business sign-up flow with VAT field.",
+            "similarity": 0.423197
+          },
+          {
+            "ticket_id": "t-003",
+            "intent": "cancel_order",
+            "body_snippet": "Please cancel my order #88001, I changed my mind.",
+            "resolution_snippet": "Order cancelled before shipping; full charge reverted.",
+            "similarity": 0.274587
+          }
+        ],
+        "draft_response": "Thanks for getting in touch. Based on similar cases (get_refund), the usual resolution is: Refund processed within 5 business days. Replacement also offered if preferred. Reply to this thread if that does not fit your situation.",
+        "decision": {
+          "decision": "suggest",
+          "confidence": 0.7583212,
+          "rationale": "confidence 0.76 in suggest band"
         },
-        {
-          "intent": "track_refund",
-          "confidence": 0.18490532040596008
-        }
-      ],
-      "inference_ms": 112.68
+        "llm_used": false,
+        "latency_ms": 4,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": 0.0
+      }
     },
     {
-      "ticket": "How do I cancel my subscription before the next billing cycle?",
-      "top_intent": "delete_account",
-      "confidence": 0.4937317371368408,
-      "alternatives": [
-        {
-          "intent": "check_cancellation_fee",
-          "confidence": 0.46025216579437256
+      "ticket": {
+        "ticket_id": "d-102",
+        "channel": "chat",
+        "body": "Where is my package? It was supposed to arrive 3 days ago."
+      },
+      "result": {
+        "ticket_id": "d-102",
+        "trace_id": "fe7cd999457e460e98dced42f0a2703e",
+        "intent": "track_order",
+        "intent_confidence": 0.7,
+        "top_intents": [
+          {
+            "intent": "track_order",
+            "score": 0.7
+          }
+        ],
+        "classifier_backend": "keyword_heuristic",
+        "priority": "P3",
+        "sentiment": "neu",
+        "urgency_score": 0.2,
+        "similar_resolved": [
+          {
+            "ticket_id": "t-002",
+            "intent": "track_order",
+            "body_snippet": "Where is my order #66721? It's been a week.",
+            "resolution_snippet": "Tracking link shared and carrier ETA explained. SLA: 7-10 business days for this region.",
+            "similarity": 0.378911
+          },
+          {
+            "ticket_id": "t-006",
+            "intent": "contact_human_agent",
+            "body_snippet": "Get me a real person right now.",
+            "resolution_snippet": "Transferred to live chat queue.",
+            "similarity": 0.29508
+          },
+          {
+            "ticket_id": "t-010",
+            "intent": "check_refund_policy",
+            "body_snippet": "What is your refund policy on opened items?",
+            "resolution_snippet": "30-day return policy stated; opened items in original packaging accepted.",
+            "similarity": 0.19812
+          },
+          {
+            "ticket_id": "t-009",
+            "intent": "payment_issue",
+            "body_snippet": "My card was declined but my bank says there are no issues.",
+            "resolution_snippet": "Asked user to retry after 10 minutes; rate-limit on payment provider.",
+            "similarity": 0.161842
+          },
+          {
+            "ticket_id": "t-005",
+            "intent": "complaint",
+            "body_snippet": "This service is terrible, worst customer experience ever.",
+            "resolution_snippet": "Escalated to senior CS manager who called the customer.",
+            "similarity": 0.093546
+          }
+        ],
+        "draft_response": "Thanks for getting in touch. Based on similar cases (track_order), the usual resolution is: Tracking link shared and carrier ETA explained. SLA: 7-10 business days for this region. Reply to this thread if that does not fit your situation.",
+        "decision": {
+          "decision": "suggest",
+          "confidence": 0.6015644,
+          "rationale": "confidence 0.60 in suggest band"
         },
-        {
-          "intent": "check_refund_policy",
-          "confidence": 0.009116523899137974
-        }
-      ],
-      "inference_ms": 50.21
+        "llm_used": false,
+        "latency_ms": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": 0.0
+      }
     },
     {
-      "ticket": "Can you help me reset my password? The reset email never came.",
-      "top_intent": "recover_password",
-      "confidence": 0.9956268072128296,
-      "alternatives": [
-        {
-          "intent": "delete_account",
-          "confidence": 0.002868285635486245
+      "ticket": {
+        "ticket_id": "d-103",
+        "channel": "slack",
+        "body": "This is unacceptable, three weeks without an answer. I want to file a complaint."
+      },
+      "result": {
+        "ticket_id": "d-103",
+        "trace_id": "b7c1e413514d40629f1b98f7b334eb73",
+        "intent": "complaint",
+        "intent_confidence": 0.7,
+        "top_intents": [
+          {
+            "intent": "complaint",
+            "score": 0.7
+          }
+        ],
+        "classifier_backend": "keyword_heuristic",
+        "priority": "P1",
+        "sentiment": "neg",
+        "urgency_score": 0.55,
+        "similar_resolved": [
+          {
+            "ticket_id": "t-001",
+            "intent": "get_refund",
+            "body_snippet": "I want a refund for my order #12345, the product arrived broken.",
+            "resolution_snippet": "Refund processed within 5 business days. Replacement also offered if preferred.",
+            "similarity": 0.413034
+          },
+          {
+            "ticket_id": "t-003",
+            "intent": "cancel_order",
+            "body_snippet": "Please cancel my order #88001, I changed my mind.",
+            "resolution_snippet": "Order cancelled before shipping; full charge reverted.",
+            "similarity": 0.323884
+          },
+          {
+            "ticket_id": "t-008",
+            "intent": "get_invoice",
+            "body_snippet": "I need a copy of the invoice for order #12345 for accounting.",
+            "resolution_snippet": "PDF invoice emailed; also available in user dashboard.",
+            "similarity": 0.295313
+          },
+          {
+            "ticket_id": "t-011",
+            "intent": "create_account",
+            "body_snippet": "How do I create a business account?",
+            "resolution_snippet": "Linked to business sign-up flow with VAT field.",
+            "similarity": 0.27775
+          },
+          {
+            "ticket_id": "t-010",
+            "intent": "check_refund_policy",
+            "body_snippet": "What is your refund policy on opened items?",
+            "resolution_snippet": "30-day return policy stated; opened items in original packaging accepted.",
+            "similarity": 0.232846
+          }
+        ],
+        "draft_response": "Thanks for getting in touch. Based on similar cases (get_refund), the usual resolution is: Refund processed within 5 business days. Replacement also offered if preferred. Reply to this thread if that does not fit your situation.",
+        "decision": {
+          "decision": "escalate",
+          "confidence": 0.4652136,
+          "rationale": "hard rule: intent=complaint"
         },
-        {
-          "intent": "change_shipping_address",
-          "confidence": 0.0006226513651199639
-        }
-      ],
-      "inference_ms": 51.58
+        "llm_used": false,
+        "latency_ms": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": 0.0
+      }
     },
     {
-      "ticket": "I want to talk to a real person, the chatbot keeps misunderstanding me.",
-      "top_intent": "contact_human_agent",
-      "confidence": 0.9890538454055786,
-      "alternatives": [
-        {
-          "intent": "registration_problems",
-          "confidence": 0.0054114824160933495
+      "ticket": {
+        "ticket_id": "d-104",
+        "channel": "chat",
+        "body": "Can you help me reset my password? The reset email never came."
+      },
+      "result": {
+        "ticket_id": "d-104",
+        "trace_id": "d94b3cd703c44730b4c4a4148568ab8f",
+        "intent": "recover_password",
+        "intent_confidence": 0.7,
+        "top_intents": [
+          {
+            "intent": "recover_password",
+            "score": 0.7
+          }
+        ],
+        "classifier_backend": "keyword_heuristic",
+        "priority": "P3",
+        "sentiment": "neu",
+        "urgency_score": 0.2,
+        "similar_resolved": [
+          {
+            "ticket_id": "t-012",
+            "intent": "delete_account",
+            "body_snippet": "Please delete my account and all my data (GDPR).",
+            "resolution_snippet": "Confirmed; data deletion within 30 days per privacy policy.",
+            "similarity": 0.542229
+          },
+          {
+            "ticket_id": "t-004",
+            "intent": "recover_password",
+            "body_snippet": "I can't log in, password reset email never arrives.",
+            "resolution_snippet": "Manual reset link issued; user advised to check spam folder.",
+            "similarity": 0.493358
+          },
+          {
+            "ticket_id": "t-003",
+            "intent": "cancel_order",
+            "body_snippet": "Please cancel my order #88001, I changed my mind.",
+            "resolution_snippet": "Order cancelled before shipping; full charge reverted.",
+            "similarity": 0.34198
+          },
+          {
+            "ticket_id": "t-015",
+            "intent": "check_invoice",
+            "body_snippet": "My invoice shows the wrong VAT.",
+            "resolution_snippet": "Corrected invoice issued; finance team CC'd.",
+            "similarity": 0.307531
+          },
+          {
+            "ticket_id": "t-013",
+            "intent": "delivery_options",
+            "body_snippet": "What delivery options do you offer for next-day?",
+            "resolution_snippet": "Express same-day in 12 cities, next-day nationwide; surcharge applies.",
+            "similarity": 0.168001
+          }
+        ],
+        "draft_response": "Thanks for getting in touch. Based on similar cases (delete_account), the usual resolution is: Confirmed; data deletion within 30 days per privacy policy. Reply to this thread if that does not fit your situation.",
+        "decision": {
+          "decision": "suggest",
+          "confidence": 0.6668915999999999,
+          "rationale": "confidence 0.67 in suggest band"
         },
-        {
-          "intent": "recover_password",
-          "confidence": 0.001569796702824533
-        }
-      ],
-      "inference_ms": 62.64
+        "llm_used": false,
+        "latency_ms": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": 0.0
+      }
     },
     {
-      "ticket": "I forgot to add an item to my cart, can I edit my order?",
-      "top_intent": "change_order",
-      "confidence": 0.6545862555503845,
-      "alternatives": [
-        {
-          "intent": "edit_account",
-          "confidence": 0.1928514540195465
+      "ticket": {
+        "ticket_id": "d-105",
+        "channel": "email",
+        "body": "I want to talk to a real person, the bot keeps misunderstanding me."
+      },
+      "result": {
+        "ticket_id": "d-105",
+        "trace_id": "b14755d19fbb4b43ac16ae95c035b958",
+        "intent": "contact_human_agent",
+        "intent_confidence": 0.85,
+        "top_intents": [
+          {
+            "intent": "contact_human_agent",
+            "score": 0.85
+          }
+        ],
+        "classifier_backend": "keyword_heuristic",
+        "priority": "P3",
+        "sentiment": "neu",
+        "urgency_score": 0.2,
+        "similar_resolved": [
+          {
+            "ticket_id": "t-011",
+            "intent": "create_account",
+            "body_snippet": "How do I create a business account?",
+            "resolution_snippet": "Linked to business sign-up flow with VAT field.",
+            "similarity": 0.47879
+          },
+          {
+            "ticket_id": "t-010",
+            "intent": "check_refund_policy",
+            "body_snippet": "What is your refund policy on opened items?",
+            "resolution_snippet": "30-day return policy stated; opened items in original packaging accepted.",
+            "similarity": 0.400412
+          },
+          {
+            "ticket_id": "t-001",
+            "intent": "get_refund",
+            "body_snippet": "I want a refund for my order #12345, the product arrived broken.",
+            "resolution_snippet": "Refund processed within 5 business days. Replacement also offered if preferred.",
+            "similarity": 0.369537
+          },
+          {
+            "ticket_id": "t-006",
+            "intent": "contact_human_agent",
+            "body_snippet": "Get me a real person right now.",
+            "resolution_snippet": "Transferred to live chat queue.",
+            "similarity": 0.304363
+          },
+          {
+            "ticket_id": "t-008",
+            "intent": "get_invoice",
+            "body_snippet": "I need a copy of the invoice for order #12345 for accounting.",
+            "resolution_snippet": "PDF invoice emailed; also available in user dashboard.",
+            "similarity": 0.246517
+          }
+        ],
+        "draft_response": "Thanks for getting in touch. Based on similar cases (create_account), the usual resolution is: Linked to business sign-up flow with VAT field. Reply to this thread if that does not fit your situation.",
+        "decision": {
+          "decision": "escalate",
+          "confidence": 0.716516,
+          "rationale": "hard rule: intent=contact_human_agent"
         },
-        {
-          "intent": "place_order",
-          "confidence": 0.08480636775493622
-        }
-      ],
-      "inference_ms": 61.61
+        "llm_used": false,
+        "latency_ms": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": 0.0
+      }
     },
     {
-      "ticket": "Where is my package? It was supposed to arrive 3 days ago.",
-      "top_intent": "delivery_period",
-      "confidence": 0.9972729086875916,
-      "alternatives": [
-        {
-          "intent": "set_up_shipping_address",
-          "confidence": 0.0005131491925567389
+      "ticket": {
+        "ticket_id": "d-106",
+        "channel": "twitter",
+        "body": "What is your refund policy on opened items?"
+      },
+      "result": {
+        "ticket_id": "d-106",
+        "trace_id": "786f1ee270164ca5ba7a05b712b568c7",
+        "intent": "check_refund_policy",
+        "intent_confidence": 0.7,
+        "top_intents": [
+          {
+            "intent": "check_refund_policy",
+            "score": 0.7
+          }
+        ],
+        "classifier_backend": "keyword_heuristic",
+        "priority": "P3",
+        "sentiment": "neu",
+        "urgency_score": 0.2,
+        "similar_resolved": [
+          {
+            "ticket_id": "t-010",
+            "intent": "check_refund_policy",
+            "body_snippet": "What is your refund policy on opened items?",
+            "resolution_snippet": "30-day return policy stated; opened items in original packaging accepted.",
+            "similarity": 1.0
+          },
+          {
+            "ticket_id": "t-001",
+            "intent": "get_refund",
+            "body_snippet": "I want a refund for my order #12345, the product arrived broken.",
+            "resolution_snippet": "Refund processed within 5 business days. Replacement also offered if preferred.",
+            "similarity": 0.223261
+          },
+          {
+            "ticket_id": "t-007",
+            "intent": "change_order",
+            "body_snippet": "Can I change the shipping address on order #44210?",
+            "resolution_snippet": "Address updated; courier notified before pickup.",
+            "similarity": 0.179825
+          },
+          {
+            "ticket_id": "t-011",
+            "intent": "create_account",
+            "body_snippet": "How do I create a business account?",
+            "resolution_snippet": "Linked to business sign-up flow with VAT field.",
+            "similarity": 0.151545
+          },
+          {
+            "ticket_id": "t-014",
+            "intent": "general_question",
+            "body_snippet": "Do you ship to Argentina?",
+            "resolution_snippet": "Yes, 5-10 business day window via DHL.",
+            "similarity": 0.094033
+          }
+        ],
+        "draft_response": "Thanks for getting in touch. Based on similar cases (check_refund_policy), the usual resolution is: 30-day return policy stated; opened items in original packaging accepted. Reply to this thread if that does not fit your situation.",
+        "decision": {
+          "decision": "auto_resolve",
+          "confidence": 0.85,
+          "rationale": "confidence 0.85 >= 0.85"
         },
-        {
-          "intent": "track_order",
-          "confidence": 0.00045070541091263294
-        }
-      ],
-      "inference_ms": 53.95
+        "llm_used": false,
+        "latency_ms": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": 0.0
+      }
     },
     {
-      "ticket": "Please delete my account and erase all my personal data per GDPR.",
-      "top_intent": "delete_account",
-      "confidence": 0.6224550008773804,
-      "alternatives": [
-        {
-          "intent": "edit_account",
-          "confidence": 0.2905876040458679
+      "ticket": {
+        "ticket_id": "d-107",
+        "channel": "email",
+        "body": "Please delete my account and erase all my personal data per GDPR."
+      },
+      "result": {
+        "ticket_id": "d-107",
+        "trace_id": "487f0b9e7c454892af2dc49affb2ac3c",
+        "intent": "delete_account",
+        "intent_confidence": 0.7,
+        "top_intents": [
+          {
+            "intent": "delete_account",
+            "score": 0.7
+          }
+        ],
+        "classifier_backend": "keyword_heuristic",
+        "priority": "P3",
+        "sentiment": "neu",
+        "urgency_score": 0.2,
+        "similar_resolved": [
+          {
+            "ticket_id": "t-012",
+            "intent": "delete_account",
+            "body_snippet": "Please delete my account and all my data (GDPR).",
+            "resolution_snippet": "Confirmed; data deletion within 30 days per privacy policy.",
+            "similarity": 0.880455
+          },
+          {
+            "ticket_id": "t-003",
+            "intent": "cancel_order",
+            "body_snippet": "Please cancel my order #88001, I changed my mind.",
+            "resolution_snippet": "Order cancelled before shipping; full charge reverted.",
+            "similarity": 0.381409
+          },
+          {
+            "ticket_id": "t-004",
+            "intent": "recover_password",
+            "body_snippet": "I can't log in, password reset email never arrives.",
+            "resolution_snippet": "Manual reset link issued; user advised to check spam folder.",
+            "similarity": 0.303292
+          },
+          {
+            "ticket_id": "t-009",
+            "intent": "payment_issue",
+            "body_snippet": "My card was declined but my bank says there are no issues.",
+            "resolution_snippet": "Asked user to retry after 10 minutes; rate-limit on payment provider.",
+            "similarity": 0.282737
+          },
+          {
+            "ticket_id": "t-015",
+            "intent": "check_invoice",
+            "body_snippet": "My invoice shows the wrong VAT.",
+            "resolution_snippet": "Corrected invoice issued; finance team CC'd.",
+            "similarity": 0.200467
+          }
+        ],
+        "draft_response": "Thanks for getting in touch. Based on similar cases (delete_account), the usual resolution is: Confirmed; data deletion within 30 days per privacy policy. Reply to this thread if that does not fit your situation.",
+        "decision": {
+          "decision": "suggest",
+          "confidence": 0.802182,
+          "rationale": "confidence 0.80 in suggest band"
         },
-        {
-          "intent": "recover_password",
-          "confidence": 0.05126490071415901
-        }
-      ],
-      "inference_ms": 55.68
+        "llm_used": false,
+        "latency_ms": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": 0.0
+      }
     },
     {
-      "ticket": "I want to change the shipping address for order #4521.",
-      "top_intent": "change_shipping_address",
-      "confidence": 0.9557194709777832,
-      "alternatives": [
-        {
-          "intent": "get_invoice",
-          "confidence": 0.017157983034849167
+      "ticket": {
+        "ticket_id": "d-108",
+        "channel": "chat",
+        "body": "I was charged twice for the same purchase, please look into it."
+      },
+      "result": {
+        "ticket_id": "d-108",
+        "trace_id": "f494295e0779420c92d15c314a3b680b",
+        "intent": "payment_issue",
+        "intent_confidence": 0.7,
+        "top_intents": [
+          {
+            "intent": "payment_issue",
+            "score": 0.7
+          }
+        ],
+        "classifier_backend": "keyword_heuristic",
+        "priority": "P3",
+        "sentiment": "neu",
+        "urgency_score": 0.2,
+        "similar_resolved": [
+          {
+            "ticket_id": "t-006",
+            "intent": "contact_human_agent",
+            "body_snippet": "Get me a real person right now.",
+            "resolution_snippet": "Transferred to live chat queue.",
+            "similarity": 0.436962
+          },
+          {
+            "ticket_id": "t-004",
+            "intent": "recover_password",
+            "body_snippet": "I can't log in, password reset email never arrives.",
+            "resolution_snippet": "Manual reset link issued; user advised to check spam folder.",
+            "similarity": 0.365446
+          },
+          {
+            "ticket_id": "t-008",
+            "intent": "get_invoice",
+            "body_snippet": "I need a copy of the invoice for order #12345 for accounting.",
+            "resolution_snippet": "PDF invoice emailed; also available in user dashboard.",
+            "similarity": 0.32353
+          },
+          {
+            "ticket_id": "t-013",
+            "intent": "delivery_options",
+            "body_snippet": "What delivery options do you offer for next-day?",
+            "resolution_snippet": "Express same-day in 12 cities, next-day nationwide; surcharge applies.",
+            "similarity": 0.286746
+          },
+          {
+            "ticket_id": "t-012",
+            "intent": "delete_account",
+            "body_snippet": "Please delete my account and all my data (GDPR).",
+            "resolution_snippet": "Confirmed; data deletion within 30 days per privacy policy.",
+            "similarity": 0.185293
+          }
+        ],
+        "draft_response": "Thanks for getting in touch. Based on similar cases (contact_human_agent), the usual resolution is: Transferred to live chat queue. Reply to this thread if that does not fit your situation.",
+        "decision": {
+          "decision": "suggest",
+          "confidence": 0.6247847999999999,
+          "rationale": "confidence 0.62 in suggest band"
         },
-        {
-          "intent": "change_order",
-          "confidence": 0.010946483351290226
-        }
-      ],
-      "inference_ms": 49.65
-    },
-    {
-      "ticket": "What payment methods do you accept for international orders?",
-      "top_intent": "check_payment_methods",
-      "confidence": 0.9683743715286255,
-      "alternatives": [
-        {
-          "intent": "check_refund_policy",
-          "confidence": 0.0183600801974535
-        },
-        {
-          "intent": "delivery_options",
-          "confidence": 0.005583586636930704
-        }
-      ],
-      "inference_ms": 47.66
-    },
-    {
-      "ticket": "I was charged twice for the same purchase, please look into it.",
-      "top_intent": "place_order",
-      "confidence": 0.6057993769645691,
-      "alternatives": [
-        {
-          "intent": "check_invoice",
-          "confidence": 0.19612115621566772
-        },
-        {
-          "intent": "create_account",
-          "confidence": 0.06580191850662231
-        }
-      ],
-      "inference_ms": 48.39
+        "llm_used": false,
+        "latency_ms": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": 0.0
+      }
     }
   ]
 }

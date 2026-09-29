@@ -1,86 +1,113 @@
-"""Run the LoRA classifier on 10 realistic tickets and write demo/predictions.json.
+"""Pre-bake demo tickets by running the repository's own triage pipeline.
 
-This file is consumed by demo/index.html so the static demo page shows
-genuine model outputs (no backend required at view time).
+The static Kanban in ``demo/index.html`` reads ``demo/predictions.json`` so a
+visitor sees real outputs without a backend. Without ``ANTHROPIC_API_KEY``
+the run uses the deterministic fallback (keyword classifier, heuristic
+priority, template reply, hashed encoder) and the JSON says so explicitly in
+``mode``; with a key the same script produces LLM-backed outputs.
+
+Usage::
+
+    python scripts/bake_demo_predictions.py            # -> demo/predictions.json
 """
+
 from __future__ import annotations
 
+import asyncio
 import json
-import time
+import sys
+from datetime import UTC, datetime
 from pathlib import Path
+from typing import cast
 
-import torch
-from peft import PeftModel
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from src.api.main import API_VERSION
+from src.api.schemas import Channel, TicketIn
+from src.config import get_settings
+from src.eval.runner import build_offline_pipeline
+from src.observability import configure_logging
 
-ROOT = Path(__file__).parent.parent
-MODEL = ROOT / "models" / "intent-classifier-lora"
+ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "demo" / "predictions.json"
-OUT.parent.mkdir(parents=True, exist_ok=True)
 
-TICKETS = [
-    "I'd like a refund for the order I placed yesterday — it never arrived.",
-    "How do I cancel my subscription before the next billing cycle?",
-    "Can you help me reset my password? The reset email never came.",
-    "I want to talk to a real person, the chatbot keeps misunderstanding me.",
-    "I forgot to add an item to my cart, can I edit my order?",
-    "Where is my package? It was supposed to arrive 3 days ago.",
-    "Please delete my account and erase all my personal data per GDPR.",
-    "I want to change the shipping address for order #4521.",
-    "What payment methods do you accept for international orders?",
-    "I was charged twice for the same purchase, please look into it.",
+DEMO_TICKETS: list[dict[str, str]] = [
+    {
+        "ticket_id": "d-101",
+        "channel": "email",
+        "body": "I'd like a refund for the order I placed yesterday, it arrived broken.",
+    },
+    {
+        "ticket_id": "d-102",
+        "channel": "chat",
+        "body": "Where is my package? It was supposed to arrive 3 days ago.",
+    },
+    {
+        "ticket_id": "d-103",
+        "channel": "slack",
+        "body": "This is unacceptable, three weeks without an answer. I want to file a complaint.",
+    },
+    {
+        "ticket_id": "d-104",
+        "channel": "chat",
+        "body": "Can you help me reset my password? The reset email never came.",
+    },
+    {
+        "ticket_id": "d-105",
+        "channel": "email",
+        "body": "I want to talk to a real person, the bot keeps misunderstanding me.",
+    },
+    {
+        "ticket_id": "d-106",
+        "channel": "twitter",
+        "body": "What is your refund policy on opened items?",
+    },
+    {
+        "ticket_id": "d-107",
+        "channel": "email",
+        "body": "Please delete my account and erase all my personal data per GDPR.",
+    },
+    {
+        "ticket_id": "d-108",
+        "channel": "chat",
+        "body": "I was charged twice for the same purchase, please look into it.",
+    },
 ]
 
 
-def main() -> None:
-    with open(MODEL / "label_mapping.json") as f:
-        mapping = json.load(f)
-    id2label = {int(k): v for k, v in mapping["id2label"].items()}
-    n_labels = len(id2label)
-
-    print(f"Loading base + LoRA ({n_labels} labels)...")
-    base = AutoModelForSequenceClassification.from_pretrained(
-        "distilbert-base-uncased",
-        num_labels=n_labels,
-        id2label=id2label,
-        label2id=mapping["label2id"],
-    )
-    model = PeftModel.from_pretrained(base, str(MODEL))
-    model.eval()
-    tok = AutoTokenizer.from_pretrained(str(MODEL))
-
-    results = []
-    for text in TICKETS:
-        enc = tok(text, return_tensors="pt", truncation=True, max_length=128)
-        t0 = time.perf_counter()
-        with torch.no_grad():
-            out = model(**enc)
-        dt_ms = (time.perf_counter() - t0) * 1000
-        probs = torch.softmax(out.logits, dim=-1)[0]
-        top3 = torch.topk(probs, k=3)
-        top = [
-            {"intent": id2label[int(i)], "confidence": float(p)}
-            for i, p in zip(top3.indices, top3.values)
-        ]
-        results.append({
-            "ticket": text,
-            "top_intent": top[0]["intent"],
-            "confidence": top[0]["confidence"],
-            "alternatives": top[1:],
-            "inference_ms": round(dt_ms, 2),
-        })
-        print(f"  '{text[:50]}...' -> {top[0]['intent']} ({top[0]['confidence']:.3f}) in {dt_ms:.1f}ms")
-
-    payload = {
-        "model": "distilbert-base-uncased + LoRA r=8",
-        "n_labels": n_labels,
-        "test_macro_f1": 0.9864,
-        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "predictions": results,
+async def bake() -> dict[str, object]:
+    """Run every demo ticket through the pipeline and collect the outputs."""
+    settings = get_settings()
+    pipeline = await build_offline_pipeline(settings if settings.llm_enabled else None)
+    outputs = []
+    for t in DEMO_TICKETS:
+        ticket = TicketIn(
+            ticket_id=t["ticket_id"], channel=cast(Channel, t["channel"]), body=t["body"]
+        )
+        out = await pipeline.triage(ticket)
+        outputs.append({"ticket": t, "result": out.model_dump()})
+    return {
+        "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
+        "api_version": API_VERSION,
+        "mode": "llm" if pipeline.llm_enabled else "fallback determinista, sin LLM",
+        "classifier_backend": pipeline.classifier.name,
+        "model": settings.anthropic_model if pipeline.llm_enabled else None,
+        "note": (
+            "Outputs produced by src/ with the deterministic fallback (keyword classifier, "
+            "heuristic priority, template reply, hashed encoder). They are NOT the production "
+            "system's quality; run with ANTHROPIC_API_KEY and the ml extra for real outputs."
+        ),
+        "tickets": outputs,
     }
-    OUT.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    print(f"\nWrote {OUT}")
 
 
-if __name__ == "__main__":
-    main()
+def main() -> int:
+    """CLI entry point."""
+    configure_logging("WARNING")
+    payload = asyncio.run(bake())
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"wrote {OUT} ({len(DEMO_TICKETS)} tickets, mode={payload['mode']})")
+    return 0
+
+
+if __name__ == "__main__":  # pragma: no cover
+    sys.exit(main())
